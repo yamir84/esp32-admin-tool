@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+<!-- BEGIN HEAD-->
+
+<head>
+    <meta charset="UTF-8" />
+    <title>AdminTools | MQTT</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="ElectronicIOT" name="author" />
+    <!-- Favicon icon -->
+    <link rel="icon" href="esp32.png" type="image/x-icon">
+    <!-- GLOBAL STYLES -->
+    <link rel="stylesheet" href="bootstrap.css" />
+    <link rel="stylesheet" href="main.css" />
+    <link rel="stylesheet" href="theme.css" />
+    <link rel="stylesheet" href="MoneAdmin.css" />
+    <link rel="stylesheet" href="font-awesome.css" />
+    <link rel="stylesheet" href="bootstrap-switch.css" />
+    <link rel="stylesheet" href="styles.css" />
+    <!--END GLOBAL STYLES -->
+</head>
+<!-- END  HEAD-->
+<!-- BEGIN BODY-->
+
+<body class="padTop53 ">
+    <!-- MAIN WRAPPER -->
+    <div id="wrap">
+        <!-- HEADER SECTION -->
+        <div id="top">
+            <nav class="navbar navbar-inverse navbar-fixed-top " style="padding-top: 10px;">
+                <a data-original-title="Show/Hide Menu" data-placement="bottom" data-tooltip="tooltip" class="accordion-toggle btn btn-primary btn-sm visible-xs" data-toggle="collapse" href="#menu" id="menu-toggle">
+                    <i class="icon-align-justify"></i>
+                </a>
+                <!-- LOGO SECTION -->
+                <header class="navbar-header">
+                    <a href="/" class="navbar-brand">
+                        <img src="logo.png" alt="" /></a>
+                </header>
+                <!-- END LOGO SECTION -->
+                <ul class="nav navbar-top-links navbar-right">
+                    <!--ADMIN SETTINGS SECTIONS -->
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="icon-user "></i>&nbsp; <i class="icon-chevron-down "></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li>
+                                <a href="esp-admin"><i class="icon-user"></i> Usuario </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li><a href="esp-logout"><i class="icon-signout"></i> Salir </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!--END ADMIN SETTINGS -->
+                </ul>
+            </nav>
+        </div>
+        <!-- END HEADER SECTION -->
+        <!-- MENU SECTION -->
+        <div id="left">
+            <div class="media user-media well-small">
+                <a class="user-link" href="/">
+                    <img class="media-object img-thumbnail user-img" alt="User Picture" src="esp32.png" />
+                </a>
+                <br />
+                <div class="media-body">
+                    <h5 class="media-heading"> ESP32</h5>
+                    <ul class="list-unstyled user-info">
+                        <li>
+                            <a class="btn btn-success btn-xs btn-circle" style="width: 10px;height: 12px;"></a> Online
+                        </li>
+                    </ul>
+                </div>
+                <br />
+            </div>
+            <ul id="menu" class="collapse">
+                <li class="panel">
+                    <a href="/">
+                        <i class="icon-th-large"></i> Dashboard
+                    </a>
+                </li>
+                <li class="panel">
+                    <a href="esp-wifi">
+                        <i class="icon-signal"></i> WIFI
+                    </a>
+                </li>
+                <li class="panel active">
+                    <a href="esp-mqtt">
+                        <i class="icon-sitemap"></i> MQTT
+                    </a>
+                </li>
+                <li class="panel ">
+                    <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#component-nav">
+                        <i class=" icon-cog"> </i> Administrar
+                        <span class="pull-right">
+                          <i class="icon-angle-left"></i>       
+                    </a>
+                    <ul class="collapse" id="component-nav">
+                        <li class=""><a href="esp-device"><i class="icon-angle-right"></i> Dispositivo </a></li>
+                        <li class=""><a href="esp-restore"><i class="icon-angle-right"></i> Ajustes predeterminados de fábrica </a></li>
+                        <li class=""><a href="esp-restart"><i class="icon-angle-right"></i> Reinicio </a></li>
+                        <li class=""><a href="esp-admin"><i class="icon-angle-right"></i> Contraseña </a></li>
+                    </ul>
+                </li>
+                <li class="panel">
+                    <a href="esp-logout">
+                        <i class="icon-signout"></i> Salir
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!--END MENU SECTION -->
+        <!--PAGE CONTENT -->
+        <div id="content">
+            <div class="inner" style="min-height:1200px;">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h2> Configuración del Broker MQTT</h2>
+                    </div>
+                </div>
+            <hr>
+ 
+            <!--END BLOCK SECTION -->
+            <div class="col-lg-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <i class="icon-sitemap"></i> Broker MQTT
+                    </div>
+                    <div class="panel-body">
+                        <br>
+                        
+                        <form class="form-horizontal">
+
+                            <div class="form-group">
+                                <label for="text1" class="control-label col-lg-3">Conexión MQTT:</label>
+                                <div class="col-lg-5">
+                                    <div class="make-switch switch-mini" data-on="primary" data-off="danger">
+                                        <input type="checkbox" #MQTT# id="MQTT" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="form_idMqtt">
+                                <label for="idMqtt" class="control-label col-lg-3">Client ID MQTT Broker :</label>
+                                <div class="col-lg-5">
+                                    <input type="text" id="idMqtt" name="idMqtt" value="ESP32" placeholder="ID MQTT Broker" class="form-control mqtt" />                                   
+                                </div>
+                            </div>
+                            <div class="form-group" id="form_mqttuser">
+                                <label for="mqttuser" class="control-label col-lg-3">Usuario MQTT Broker :</label>
+                                <div class="col-lg-5">
+                                    <input type="text" id="mqttuser" name="mqttuser" value="cubaelectronica" placeholder="Usuario MQTT" class="form-control mqtt" />                              
+                                </div>
+                            </div>
+                            <div class="form-group" id="form_mqttpass">
+                                <label for="mqttpass" class="control-label col-lg-3">Contraseña MQTT Broker:</label>
+                                <div class="col-lg-5">
+                                    <input type="password" id="mqttpass" name="mqttpass" placeholder="*********" class="form-control mqtt" />
+                                </div>
+                            </div>
+                            <div class="form-group" id="form_mqttserver">
+                                <label for="mqttserver" class="control-label col-lg-3">Servidor MQTT :</label>
+                                <div class="col-lg-5">
+                                    <input type="text" id="mqttserver" name="mqttserver" value="cubaelectronica.com" placeholder="Servidor MQTT" class="form-control mqtt" />
+                                </div>
+                            </div>
+                            <div class="form-group" id="form_mqttport">
+                                <label for="mqttport" class="control-label col-lg-3">Puerto Servidor MQTT :</label>
+                                <div class="col-lg-5">
+                                    <input type="number" id="mqttport" name="mqttport" value="1883" placeholder="Puerto Servidor MQTT" class="form-control mqtt" />
+                                </div>
+                            </div>
+                            <div class="form-group" id="form_timeMQTT">
+                                <label for="timeMQTT" class="control-label col-lg-3">Publish cada (min) :</label>
+                                <div class="col-lg-5">
+                                    <input type="number" id="timeMQTT" name="timeMQTT" value="1" placeholder="Tiempo en Minutos" class="form-control mqtt">
+                                </div>
+                            </div>
+                     
+                            <div class="form-group">
+                                <label for="#" class="control-label col-lg-3"></label>
+                                <div class="col-lg-5">
+                                    <button class="btn btn-primary" type="submit"><i class="icon-save icon-white"></i> Guardar</button>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--END PAGE CONTENT -->
+    </div>
+    <!-- END RIGHT STRIP  SECTION -->
+    </div>
+    <!--END MAIN WRAPPER -->
+    <!-- FOOTER -->
+    <div id="footer">
+        <p>&copy; ElectronicIOT &nbsp;2021 &nbsp;v1.0.0</p>
+    </div>
+    <!--END FOOTER -->
+    <!-- GLOBAL SCRIPTS -->
+    <script src="jquery-2.0.3.min.js"></script>
+    <script src="bootstrap.min.js"></script>
+    <script src="modernizr-2.6.2.min.js"></script>
+    <script src="bootstrap-switch.min.js"></script>
+    <script src="scripts.js"></script>
+    <!-- END GLOBAL SCRIPTS -->
+</body>
+<!-- END BODY-->
+
+</html>
