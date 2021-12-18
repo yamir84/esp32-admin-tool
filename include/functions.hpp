@@ -10,6 +10,19 @@
 #include "LedBlink.hpp"
 
 // -------------------------------------------------------------------
+// Sensor Temp Interno CPU
+// -------------------------------------------------------------------
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+    uint8_t temprature_sens_read();
+#ifdef __cplusplus
+}
+#endif
+uint8_t temprature_sens_read();
+
+// -------------------------------------------------------------------
 // Genera un log en el puerto Serial
 // -------------------------------------------------------------------
 void log(String s){
@@ -79,9 +92,49 @@ void settingPines(){
     pinMode(MQTTLED, OUTPUT);
     pinMode(RELAY1, OUTPUT);  
     pinMode(RELAY2, OUTPUT);  
-    // Los iniciamos en nivel bajo            
-    digitalWrite(RELAY1, LOW);
-    digitalWrite(RELAY2, LOW);    
-    digitalWrite(MQTTLED, LOW);    
-    digitalWrite(WIFILED, LOW);
+    // Los iniciamos en nivel bajo
+    setOffSingle(RELAY1);
+    setOffSingle(RELAY2); 
+    setOffSingle(WIFILED); 
+    setOffSingle(MQTTLED);             
+}
+// -------------------------------------------------------------------
+// Parpadeo LED MQTT Transmisión
+// -------------------------------------------------------------------
+void mqttTX(){ 
+    for (int i = 0; i < 2; i++){
+        setOnSingle(MQTTLED);
+        delay(50);
+        setOffSingle(MQTTLED);
+        delay(10);
+    }  
+}
+// -------------------------------------------------------------------
+// Parpadeo LED MQTT Recepción
+// -------------------------------------------------------------------
+void mqttRX(){
+    for (int i = 0; i < 1; i++){
+        blinkRandomSingle(5,50,MQTTLED);
+        delay(5);
+    }
+}
+// -------------------------------------------------------------------
+// Retorna la calidad de señal WIFI en %
+// -------------------------------------------------------------------
+int getRSSIasQuality(int RSSI){
+    int quality = 0;
+    if(RSSI <= -100){
+        quality = 0;
+    } else if(RSSI >= -50){
+        quality = 100;
+    } else{
+       quality = 2 * (RSSI + 100); 
+    }
+    return quality;
+}
+// -------------------------------------------------------------------
+// Retorna la temperatura del CPU
+// -------------------------------------------------------------------
+float TempCPUValue (){
+    return temp_cpu = (temprature_sens_read() - 32) / 1.8;
 }

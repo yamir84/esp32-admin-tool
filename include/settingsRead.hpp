@@ -42,5 +42,50 @@ boolean settingsReadWiFi(){
         log("Info: Lectura configuración WiFi correcta");
         return true;
     }
+}
+// -------------------------------------------------------------------
+// Leer configuraciones de los Parametros MQTT
+// -------------------------------------------------------------------
+boolean settingsReadMQTT(){
+    // Lee la configuración MQTT
+    StaticJsonDocument<500> jsonConfig;
 
+    File file = SPIFFS.open(F("/settingmqtt.json"), "r");
+    if (deserializeJson(jsonConfig, file)){
+        // Si falla la lectura asume valores por defecto
+        settingsResetMQTT();
+        log(F("Error: Falló la lectura de la configuración MQTT, tomando valores por defecto"));
+        return false;
+    }else{
+        // Si lee el archivo
+        strlcpy(mqtt_user, jsonConfig["mqtt_user"], sizeof(mqtt_user));
+        strlcpy(mqtt_passw, jsonConfig["mqtt_passw"], sizeof(mqtt_passw));
+        strlcpy(mqtt_server, jsonConfig["mqtt_server"], sizeof(mqtt_server));
+        strlcpy(mqtt_id, jsonConfig["mqtt_id"], sizeof(mqtt_id));
+        mqtt_time = jsonConfig["mqtt_time"];
+        mqtt_port = jsonConfig["mqtt_port"];
+        mqtt_enable = jsonConfig["mqtt_enable"];
+        file.close();
+        log(F("Info: Lectura de configuración MQTT correcta"));
+        return true;
+    }
+}
+// -------------------------------------------------------------------
+// Leer estados de los Relays
+// -------------------------------------------------------------------
+boolean settingsReadRelays(){
+    StaticJsonDocument<200> jsonConfig;
+    File file = SPIFFS.open("/settingrelays.json", "r");
+    if (deserializeJson(jsonConfig, file)){
+        // Si falla la lectura inicia valores por defecto
+        settingsResetRelays();
+        log("Error: Falló la lectura del estados de los Relays, tomando valores por defecto");
+        return false;
+    }else{        
+        Relay01_status = jsonConfig["Relay01_status"];
+        Relay02_status = jsonConfig["Relay02_status"];
+        file.close();
+        log("Info: Lectura de los Relay correcta");
+        return true;
+    } 
 }

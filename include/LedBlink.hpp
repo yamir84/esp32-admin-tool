@@ -65,14 +65,24 @@ void blinkRandomSingle(int minTime, int maxTime, int _pin){
     }
 }
 // -------------------------------------------------------------------
-// On un Led
+// On un Led/Relay/Actuador
 // -------------------------------------------------------------------
 void setOnSingle(int _pin){
-    digitalWrite(_pin, HIGH);
+    digitalWrite(_pin, HIGH);       
 }
 // -------------------------------------------------------------------
-// Off un Led
+// Off un Led/Relay/Actuador
 // -------------------------------------------------------------------
 void setOffSingle(int _pin){
     digitalWrite(_pin, LOW);
+}
+// -------------------------------------------------------------------
+// On/Off un Led/Relay/Actuador segun Estados
+// -------------------------------------------------------------------
+void setOnOffSingle(int _pin, bool status){
+    if(status){
+        digitalWrite(_pin, HIGH); 
+    }else{
+        digitalWrite(_pin, LOW);
+    }          
 }
