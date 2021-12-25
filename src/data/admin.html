@@ -9,15 +9,16 @@
     <meta content="" name="description" />
     <meta content="ElectronicIOT" name="author" />
     <!-- Favicon icon -->
-    <link rel="icon" href="esp32.png" type="image/x-icon">
+    <link rel="icon" href="www/esp32.png" type="image/x-icon">
     <!-- GLOBAL STYLES -->
-    <link rel="stylesheet" href="bootstrap.css" />
-    <link rel="stylesheet" href="main.css" />
-    <link rel="stylesheet" href="theme.css" />
-    <link rel="stylesheet" href="MoneAdmin.css" />
-    <link rel="stylesheet" href="font-awesome.css" />
-    <link rel="stylesheet" href="bootstrap-switch.css" />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="www/bootstrap.css" />
+    <link rel="stylesheet" href="www/main.css" />
+    <link rel="stylesheet" href="www/theme.css" />
+    <link rel="stylesheet" href="www/MoneAdmin.css" />
+    <link rel="stylesheet" href="www/font-awesome.css" />
+    <link rel="stylesheet" href="www/bootstrap-switch.css" />
+    <link rel="stylesheet" href="www/sweetalert2.min.css" />
+    <link rel="stylesheet" href="www/styles.css" />
     <!--END GLOBAL STYLES -->
 </head>
 <!-- END  HEAD-->
@@ -35,7 +36,7 @@
                 <!-- LOGO SECTION -->
                 <header class="navbar-header">
                     <a href="/" class="navbar-brand">
-                        <img src="logo.png" alt="" /></a>
+                        <img src="www/logo.png" alt="" /></a>
                 </header>
                 <!-- END LOGO SECTION -->
                 <ul class="nav navbar-top-links navbar-right">
@@ -62,11 +63,11 @@
         <div id="left">
             <div class="media user-media well-small">
                 <a class="user-link" href="/">
-                    <img class="media-object img-thumbnail user-img" alt="User Picture" src="esp32.png" />
+                    <img class="media-object img-thumbnail user-img" alt="User Picture" src="www/esp32.png" />
                 </a>
                 <br />
                 <div class="media-body">
-                    <h5 class="media-heading"> ESP32</h5>
+                    <h5 class="media-heading"> #platform#</h5>
                     <ul class="list-unstyled user-info">
                         <li>
                             <a class="btn btn-success btn-xs btn-circle" style="width: 10px;height: 12px;"></a> Online
@@ -130,7 +131,7 @@
                     </div>
                     <div class="panel-body">
                         <br>
-                        <form class="form-horizontal">
+                        <form class="form-horizontal" name="esp-admin" action="esp-admin" method="POST" id="formulario">
                             
                             <div class="form-group" id="form_www_username">
                                 <label for="www_username" class="control-label col-lg-3">Nombre de Usuario Anterior:</label>
@@ -166,7 +167,7 @@
                                 <label for="#" class="control-label col-lg-3"></label>
                                 <div class="col-lg-5">
                                     <button class="btn btn-primary" type="submit"><i class="icon-save icon-white"></i> Guardar</button>
-                                    <button class="btn btn-info" type="button" ><i class="icon-eraser icon-white"></i> Limpiar Todo</button>
+                                    <button class="btn btn-info" type="button" onclick="clearAdmin();"><i class="icon-eraser icon-white"></i> Limpiar Todo</button>
                                 </div>
                             </div>
 
@@ -188,11 +189,12 @@
     </div>
     <!--END FOOTER -->
     <!-- GLOBAL SCRIPTS -->
-    <script src="jquery-2.0.3.min.js"></script>
-    <script src="bootstrap.min.js"></script>
-    <script src="modernizr-2.6.2.min.js"></script>
-    <script src="bootstrap-switch.min.js"></script>
-    <script src="scripts.js"></script>
+    <script src="www/jquery-2.0.3.min.js"></script>
+    <script src="www/bootstrap.min.js"></script>
+    <script src="www/modernizr-2.6.2.min.js"></script>
+    <script src="www/bootstrap-switch.min.js"></script>
+    <script src="www/sweetalert2.min.js"></script>
+    <script src="www/scripts.js"></script>
     <!-- END GLOBAL SCRIPTS -->
 </body>
 <!-- END BODY-->

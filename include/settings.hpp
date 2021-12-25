@@ -15,6 +15,21 @@
 #define WIFILED 12                  // GPIO12 LED INDICADOR WIFI 
 #define MQTTLED 13                  // GPIO13 LED INDICADOR MQTT
 // -------------------------------------------------------------------
+// CALCULAR LA CAPACIDAD DEL JSON
+// Asistente ArduinoJson: https://arduinojson.org/v6/assistant/
+// Documentación: https://arduinojson.org/v6/api/json/deserializejson/
+// -------------------------------------------------------------------
+const size_t capacitywifi = JSON_OBJECT_SIZE(16)+424;
+const size_t capacitymqtt = JSON_OBJECT_SIZE(7)+166;
+const size_t capacityrelays = JSON_OBJECT_SIZE(2)+30;
+const size_t capacityadmin = JSON_OBJECT_SIZE(2)+42;
+// -------------------------------------------------------------------
+// Versión de Firmware desde las variables de entorno platformio.ini
+// -------------------------------------------------------------------
+#define TEXTIFY(A) #A
+#define ESCAPEQUOTE(A) TEXTIFY(A)
+String currentfirmware = ESCAPEQUOTE(BUILD_TAG);
+// -------------------------------------------------------------------
 // Version de Hardware 
 // -------------------------------------------------------------------
 #define HW "ADMINESP32 v1 00000000" // Versión del hardware
@@ -62,3 +77,9 @@ float   temp_cpu;                   // Temperatura del CPU en °C
 // Zona Relays
 // -------------------------------------------------------------------
 bool Relay01_status, Relay02_status; // Estados de los Relay de Salida
+// -------------------------------------------------------------------
+// Zona www_username & www_password
+// -------------------------------------------------------------------
+char www_username[15];              // Usuario para acceso al servidor Web
+char www_password[15];              // Contraseña del usuario servidor Web
+

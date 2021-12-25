@@ -39,10 +39,10 @@ void settingsResetMQTT(){
     strlcpy(mqtt_user, "cuba_iot", sizeof(mqtt_user));
     strlcpy(mqtt_passw, "cuba_iot", sizeof(mqtt_passw));
     strlcpy(mqtt_server, "cubaelectronica.com", sizeof(mqtt_server));
-    strlcpy(mqtt_id, deviceID().c_str(), sizeof(mqtt_id));
+    strlcpy(mqtt_id, device_id.c_str(), sizeof(mqtt_id));
     mqtt_time = 60000;  // Un Minuto
     mqtt_port = 1883;
-    mqtt_enable = true;
+    mqtt_enable = false;
 }
 // -------------------------------------------------------------------
 // Valores por defecto Relays
@@ -51,4 +51,11 @@ void settingsResetRelays(){
     Relay01_status = LOW;
     Relay02_status = LOW;
 }
-
+// -------------------------------------------------------------------
+// Valores por defecto www_username/password
+// -------------------------------------------------------------------
+void settingsResetAdmin(){
+    // Define configuración por defecto Usuario y Contraseña WWW
+    strlcpy(www_username, "admin", sizeof(www_username));
+    strlcpy(www_password, "admin", sizeof(www_password));
+}

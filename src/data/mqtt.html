@@ -9,21 +9,21 @@
     <meta content="" name="description" />
     <meta content="ElectronicIOT" name="author" />
     <!-- Favicon icon -->
-    <link rel="icon" href="esp32.png" type="image/x-icon">
+    <link rel="icon" href="www/esp32.png" type="image/x-icon">
     <!-- GLOBAL STYLES -->
-    <link rel="stylesheet" href="bootstrap.css" />
-    <link rel="stylesheet" href="main.css" />
-    <link rel="stylesheet" href="theme.css" />
-    <link rel="stylesheet" href="MoneAdmin.css" />
-    <link rel="stylesheet" href="font-awesome.css" />
-    <link rel="stylesheet" href="bootstrap-switch.css" />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="www/bootstrap.css" />
+    <link rel="stylesheet" href="www/main.css" />
+    <link rel="stylesheet" href="www/theme.css" />
+    <link rel="stylesheet" href="www/MoneAdmin.css" />
+    <link rel="stylesheet" href="www/font-awesome.css" />
+    <link rel="stylesheet" href="www/bootstrap-switch.css" />
+    <link rel="stylesheet" href="www/styles.css" />
     <!--END GLOBAL STYLES -->
 </head>
 <!-- END  HEAD-->
 <!-- BEGIN BODY-->
 
-<body class="padTop53 ">
+<body class="padTop53 " onLoad="mqtt()">
     <!-- MAIN WRAPPER -->
     <div id="wrap">
         <!-- HEADER SECTION -->
@@ -35,7 +35,7 @@
                 <!-- LOGO SECTION -->
                 <header class="navbar-header">
                     <a href="/" class="navbar-brand">
-                        <img src="logo.png" alt="" /></a>
+                        <img src="www/logo.png" alt="" /></a>
                 </header>
                 <!-- END LOGO SECTION -->
                 <ul class="nav navbar-top-links navbar-right">
@@ -62,11 +62,11 @@
         <div id="left">
             <div class="media user-media well-small">
                 <a class="user-link" href="/">
-                    <img class="media-object img-thumbnail user-img" alt="User Picture" src="esp32.png" />
+                    <img class="media-object img-thumbnail user-img" alt="User Picture" src="www/esp32.png" />
                 </a>
                 <br />
                 <div class="media-body">
-                    <h5 class="media-heading"> ESP32</h5>
+                    <h5 class="media-heading"> #platform#</h5>
                     <ul class="list-unstyled user-info">
                         <li>
                             <a class="btn btn-success btn-xs btn-circle" style="width: 10px;height: 12px;"></a> Online
@@ -129,62 +129,59 @@
                         <i class="icon-sitemap"></i> Broker MQTT
                     </div>
                     <div class="panel-body">
-                        <br>
-                        
-                        <form class="form-horizontal">
-
+                        <br>                        
+                        <form class="form-horizontal" name="esp-mqtt" action="esp-mqtt" method="POST">
+                            <input type="hidden" id="mqtten" name="mqtten" value="#mqtten#" class="form-control" />
                             <div class="form-group">
-                                <label for="text1" class="control-label col-lg-3">Conexión MQTT:</label>
+                                <label for="mqtt_enable" class="control-label col-lg-3">Conexión MQTT:</label>
                                 <div class="col-lg-5">
                                     <div class="make-switch switch-mini" data-on="primary" data-off="danger">
-                                        <input type="checkbox" #MQTT# id="MQTT" />
+                                        <input type="checkbox" #mqtt_enable# id="mqtt_enable" onchange="mqttenable();" />
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group" id="form_idMqtt">
-                                <label for="idMqtt" class="control-label col-lg-3">Client ID MQTT Broker :</label>
+                            <div class="form-group" id="form_id">
+                                <label for="mqtt_id" class="control-label col-lg-3">Client ID MQTT Broker :</label>
                                 <div class="col-lg-5">
-                                    <input type="text" id="idMqtt" name="idMqtt" value="ESP32" placeholder="ID MQTT Broker" class="form-control mqtt" />                                   
+                                    <input type="text" id="mqtt_id" name="mqtt_id" value="#mqtt_id#" placeholder="ID MQTT Broker" class="form-control mqtt" />                                   
                                 </div>
                             </div>
-                            <div class="form-group" id="form_mqttuser">
-                                <label for="mqttuser" class="control-label col-lg-3">Usuario MQTT Broker :</label>
+                            <div class="form-group" id="form_user">
+                                <label for="mqtt_user" class="control-label col-lg-3">Usuario MQTT Broker :</label>
                                 <div class="col-lg-5">
-                                    <input type="text" id="mqttuser" name="mqttuser" value="cubaelectronica" placeholder="Usuario MQTT" class="form-control mqtt" />                              
+                                    <input type="text" id="mqtt_user" name="mqtt_user" value="#mqtt_user#" placeholder="Usuario MQTT" class="form-control mqtt" />                              
                                 </div>
                             </div>
-                            <div class="form-group" id="form_mqttpass">
-                                <label for="mqttpass" class="control-label col-lg-3">Contraseña MQTT Broker:</label>
+                            <div class="form-group" id="form_passw">
+                                <label for="mqtt_passw" class="control-label col-lg-3">Contraseña MQTT Broker:</label>
                                 <div class="col-lg-5">
-                                    <input type="password" id="mqttpass" name="mqttpass" placeholder="*********" class="form-control mqtt" />
+                                    <input type="password" id="mqtt_passw" name="mqtt_passw" placeholder="*********" class="form-control mqtt" />
                                 </div>
                             </div>
-                            <div class="form-group" id="form_mqttserver">
-                                <label for="mqttserver" class="control-label col-lg-3">Servidor MQTT :</label>
+                            <div class="form-group" id="form_server">
+                                <label for="mqtt_server" class="control-label col-lg-3">Servidor MQTT :</label>
                                 <div class="col-lg-5">
-                                    <input type="text" id="mqttserver" name="mqttserver" value="cubaelectronica.com" placeholder="Servidor MQTT" class="form-control mqtt" />
+                                    <input type="text" id="mqtt_server" name="mqtt_server" value="#mqtt_server#" placeholder="Servidor MQTT" class="form-control mqtt" />
                                 </div>
                             </div>
-                            <div class="form-group" id="form_mqttport">
-                                <label for="mqttport" class="control-label col-lg-3">Puerto Servidor MQTT :</label>
+                            <div class="form-group" id="form_port">
+                                <label for="mqtt_port" class="control-label col-lg-3">Puerto Servidor MQTT :</label>
                                 <div class="col-lg-5">
-                                    <input type="number" id="mqttport" name="mqttport" value="1883" placeholder="Puerto Servidor MQTT" class="form-control mqtt" />
+                                    <input type="number" id="mqtt_port" name="mqtt_port" value="#mqtt_port#" placeholder="Puerto Servidor MQTT" class="form-control mqtt" />
                                 </div>
                             </div>
-                            <div class="form-group" id="form_timeMQTT">
-                                <label for="timeMQTT" class="control-label col-lg-3">Publish cada (min) :</label>
+                            <div class="form-group" id="form_time">
+                                <label for="mqtt_time" class="control-label col-lg-3">Publish cada (min) :</label>
                                 <div class="col-lg-5">
-                                    <input type="number" id="timeMQTT" name="timeMQTT" value="1" placeholder="Tiempo en Minutos" class="form-control mqtt">
+                                    <input type="number" id="mqtt_time" name="mqtt_time" value="#mqtt_time#" placeholder="Tiempo en Minutos" class="form-control mqtt">
                                 </div>
-                            </div>
-                     
+                            </div>                     
                             <div class="form-group">
                                 <label for="#" class="control-label col-lg-3"></label>
                                 <div class="col-lg-5">
                                     <button class="btn btn-primary" type="submit"><i class="icon-save icon-white"></i> Guardar</button>
                                 </div>
                             </div>
-
                         </form>
                     </div>
                 </div>
@@ -202,11 +199,11 @@
     </div>
     <!--END FOOTER -->
     <!-- GLOBAL SCRIPTS -->
-    <script src="jquery-2.0.3.min.js"></script>
-    <script src="bootstrap.min.js"></script>
-    <script src="modernizr-2.6.2.min.js"></script>
-    <script src="bootstrap-switch.min.js"></script>
-    <script src="scripts.js"></script>
+    <script src="www/jquery-2.0.3.min.js"></script>
+    <script src="www/bootstrap.min.js"></script>
+    <script src="www/modernizr-2.6.2.min.js"></script>
+    <script src="www/bootstrap-switch.min.js"></script>
+    <script src="www/scripts.js"></script>
     <!-- END GLOBAL SCRIPTS -->
 </body>
 <!-- END BODY-->
