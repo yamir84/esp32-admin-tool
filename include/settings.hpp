@@ -33,6 +33,7 @@ String currentfirmware = ESCAPEQUOTE(BUILD_TAG);
 // Version de Hardware 
 // -------------------------------------------------------------------
 #define HW "ADMINESP32 v1 00000000" // Versión del hardware
+#define MF "ELECTRONIC IOT"         // fabricante
 // -------------------------------------------------------------------
 // Zona Configuración General 
 // -------------------------------------------------------------------        

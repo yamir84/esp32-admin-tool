@@ -321,3 +321,35 @@ String SweetAlert(String TitleWeb, String SweetTitle, String SweetText, String S
     }
     return SweetAlert;
 }
+
+// -------------------------------------------------------------------
+// Control de los Relay desde MQTT & WS
+// -------------------------------------------------------------------
+
+boolean settingsSaveRelays();
+
+void OnOffRelays(String command){
+
+    DynamicJsonDocument JsonDoc(1024);
+
+    deserializeJson(JsonDoc, command);
+    
+    if(JsonDoc["protocol"] == "WS"){
+        log("Info: Commando por WS => " + command);
+    }else{
+        log("Info: Commando por MQTT => " + command);
+    }
+    	
+    serializeJsonPretty(JsonDoc, Serial);
+
+    if (JsonDoc["value"]){
+        digitalWrite(JsonDoc["output"] == "RELAY1" ? RELAY1 : RELAY2, HIGH);
+        JsonDoc["output"] == "RELAY1" ? Relay01_status = HIGH : Relay02_status = HIGH ;
+    }else {
+        digitalWrite(JsonDoc["output"] == "RELAY1" ? RELAY1 : RELAY2, LOW);
+        JsonDoc["output"] == "RELAY1" ? Relay01_status = LOW : Relay02_status = LOW ;
+    }
+
+    settingsSaveRelays();    
+
+}

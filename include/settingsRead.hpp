@@ -18,7 +18,7 @@ boolean settingsReadWiFi(){
     File file = SPIFFS.open("/settingwifi.json", "r");
     if(deserializeJson(jsonConfig, file)){
         // Si falla la lectura inicia valores por defecto
-        settingResetWiFi();
+        settingsResetWiFi();
         log("Error: Falló la lectura de la configuración WiFi, tomando valores por defecto");
         return false;
     }else{

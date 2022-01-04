@@ -10,7 +10,7 @@
 // -------------------------------------------------------------------
 // Valores por defecto Parametros WIFI
 // -------------------------------------------------------------------
-void settingResetWiFi(){
+void settingsResetWiFi(){
     /* ------------------- GENERAL -------------------- */
     strlcpy(id, "adminesp32", sizeof(id));
     bootCount = 0;

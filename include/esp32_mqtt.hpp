@@ -40,8 +40,10 @@ boolean mqtt_connect(){
     topico_subscribe.toCharArray(topico, 150);
     mqttclient.subscribe(topico); 
 
-    topico_subscribe.toCharArray(topico, 25);
-    mqttclient.publish(topico, "ok"); //Publicar respuesta ok por MQTT
+    String topico_publish = String(mqtt_user)+"/"+mqtt_id+"/status";
+    topico_publish.toCharArray(topico, 150);
+
+    mqttclient.publish(topico, "{\"connected\": true}"); //Publicar respuesta status por MQTT
 
   } else {
     log("Error: failed, rc= " + mqttclient.state());
@@ -64,34 +66,12 @@ void callback(char *topic, byte *payload, unsigned int length){
     mqttRX();
   }
 
-  mensaje.trim();
+  mensaje.trim();  
 
-  DynamicJsonDocument jsonDoc(300);
-
-  deserializeJson(jsonDoc, mensaje);
-
-  if(jsonDoc["RELAY1"] == "on"){
-    setOnSingle(RELAY1);
-    Relay01_status = HIGH;
-    settingsSaveRelays();
-  }else if (jsonDoc["RELAY1"] == "off"){
-    setOffSingle(RELAY1);
-    Relay01_status = LOW;
-    settingsSaveRelays();
-  }else if(jsonDoc["RELAY2"] == "on"){
-    setOnSingle(RELAY2);
-    Relay02_status = HIGH;
-    settingsSaveRelays();
-  }else if (jsonDoc["RELAY2"] == "off"){
-    setOffSingle(RELAY2);
-    Relay02_status = LOW;
-    settingsSaveRelays();
-  }
+  OnOffRelays(mensaje);  
 
   log("Info: Topico -->" + str_topic);
-  log("Info: Mensaje -->" + mensaje); 
-
-  serializeJsonPretty(jsonDoc, Serial);
+  log("Info: Mensaje -->" + mensaje);   
 
 }
 // -------------------------------------------------------------------
@@ -112,19 +92,19 @@ void mqtt_publish() {
 // ------------------------------------------------------------------- 
 String Json(){
 
-   String response;
-   DynamicJsonDocument jsonDoc(3000);
+    String response;
+    DynamicJsonDocument jsonDoc(3000);
+    jsonDoc["serial"] = String(device_id);
+    jsonDoc["wifi_dbm"] = WiFi.status() == WL_CONNECTED ? String(WiFi.RSSI()) : F("0");
+    jsonDoc["wifi_percent"] = WiFi.status() == WL_CONNECTED ? String(getRSSIasQuality(WiFi.RSSI())) : F("0"); 
+    jsonDoc["temp_cpu"] = String(TempCPUValue()); 
+    jsonDoc["ram_available"] = String(ESP.getFreeHeap() * 100 / ESP.getHeapSize()); 
+    jsonDoc["flash_available"] = String(round(SPIFFS.usedBytes() * 100 / SPIFFS.totalBytes()), 0);
+    jsonDoc["relay1_status"] = String(Relay01_status ? "true" : "false");
+    jsonDoc["relay2_status"] = String(Relay02_status ? "true" : "false");
 
-   jsonDoc["wifi_dbm"] = WiFi.status() == WL_CONNECTED ? String(WiFi.RSSI()) : F("0");
-   jsonDoc["wifi_percent"] = WiFi.status() == WL_CONNECTED ? String(getRSSIasQuality(WiFi.RSSI())) : F("0"); 
-   jsonDoc["temp_cpu"] = String(TempCPUValue()); 
-   jsonDoc["ram_available"] = String(ESP.getFreeHeap() * 100 / ESP.getHeapSize()); 
-   jsonDoc["flash_available"] = String(round(SPIFFS.usedBytes() * 100 / SPIFFS.totalBytes()), 0);
-   jsonDoc["relay1_status"] = String(Relay01_status ? "true" : "false");
-   jsonDoc["relay2_status"] = String(Relay02_status ? "true" : "false");
-
-   serializeJson(jsonDoc, response);   
-   return response;
+    serializeJson(jsonDoc, response);   
+    return response;
 
 }
 // -------------------------------------------------------------------

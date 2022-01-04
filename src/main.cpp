@@ -25,7 +25,6 @@
 #include "settingsSave.hpp"
 #include "esp32_wifi.hpp"
 #include "esp32_mqtt.hpp"
-#include "esp32_api.hpp"
 #include "esp32_websocket.hpp"
 #include "esp32_server.hpp"
 
@@ -78,6 +77,8 @@ void setup() {
         // Salvar el usuario y Contraseña
         settingsSaveAdmin();
     }   
+    // Inicializar el WebSockets
+    InitWebSockets();
     // Inicializar el Servidor
     InitServer();
     // Nos devuelve la lista de carpetas y archivos del SPIFFS ONLYDEBUG
@@ -114,6 +115,13 @@ void loop() {
                 }
             }      
         }
+    }
+    // -------------------------------------------------------------------
+    // Enviar JSON por WS 
+    // -------------------------------------------------------------------
+    if (millis() - lastWsSend > 1000){
+        lastWsSend = millis();
+        WsMessage(GetJson(), "");
     }
 
 

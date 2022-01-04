@@ -9,7 +9,7 @@
     <meta content="" name="description" />
     <meta content="ElectronicIOT" name="author" />
     <!-- Favicon icon -->
-    <link rel="icon" href="www/esp32.png" type="image/x-icon">
+    <link rel="icon" href="www/esp32.png" type="image/png">
     <!-- GLOBAL STYLES -->
     <link rel="stylesheet" href="www/bootstrap.css" />
     <link rel="stylesheet" href="www/main.css" />
@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="www/MoneAdmin.css" />
     <link rel="stylesheet" href="www/font-awesome.css" />
     <link rel="stylesheet" href="www/bootstrap-switch.css" />
+    <link rel="stylesheet" href="www/sweetalert2.min.css" />
     <link rel="stylesheet" href="www/styles.css" />
     <!--END GLOBAL STYLES -->
     <!-- PAGE LEVEL STYLES -->
@@ -128,35 +129,35 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div style="text-align: center;">
-                        <a class="quick-btn" href="#">
-                            <i class="icon-info-sign icon-2x"></i>
-                            <span> Dispositivo</span>
+                    <a class="quick-btn">
+                        <i class="icon-info-sign icon-2x"></i>
+                        <span> Dispositivo</span>
                         <span class="label label-danger">#platform#</span>
                     </a>
-                    <a class="quick-btn" href="#">
+                    <a class="quick-btn">
                         <i class="icon-signal icon-2x"></i>
                         <span>WIFI RSSI</span>
-                        <span class="label label-success">#wifi_dbm# dBm</span>
+                        <span class="label label-success" id="dbm_label">#wifi_dbm# dBm</span>
                     </a>
-                    <a class="quick-btn" href="#">
+                    <a class="quick-btn">
                         <i class="icon-sitemap icon-2x"></i>
                         <span>MQTT</span>
-                        <span>#mqtt_on#</span>
+                        <span id="mqtt_on">#mqtt_on#</span>
                     </a>
-                    <a class="quick-btn" href="#">
+                    <a class="quick-btn">
                         <i class=" icon-fire icon-2x"></i>
                         <span>Temp. CPU</span>
-                        <span class="label btn-metis-2">#temp_cpu# °C</span>
+                        <span class="label btn-metis-2" id="temp_cpu">#temp_cpu# °C</span>
                     </a>
-                    <a class="quick-btn" href="#">
+                    <a class="quick-btn">
                         <i class="icon-retweet icon-2x"></i>
                         <span>Reinicios</span>
                         <span class="label btn-metis-4">#bootCount#</span>
                     </a>
-                    <a class="quick-btn" href="#">
+                    <a class="quick-btn">
                         <i class="icon-time icon-2x"></i>
                         <span>Tiempo Activo</span>
-                        <span class="label label-default">#time_active#</span>
+                        <span class="label label-default" id="active">#time_active#</span>
                     </a>
         </div>
     </div>
@@ -171,23 +172,23 @@
             </div>
             <div class="panel-body">
                 <h3>Inalámbrico</h3>
-                <div><span class="label label-primary">Estado WiFi:</span> <span>#wifi_status#</span></div>
+                <div><span class="label label-primary">Estado WiFi:</span> <span id="wifi_status">#wifi_status#</span></div>
                 <div><span class="label label-primary">SSID WiFi:</span> <span>#wifi_ssid#</span></div>
                 <div><span class="label label-primary">IP WiFi:</span> <span>#wifi_ip#</span></div>
                 <div><span class="label label-primary">MAC WiFi:</span> <span>#wifi_mac#</span></div>
-                <div><span class="label label-primary">RSSI WiFi:</span> <span>#wifi_dbm# dBm</span></div>
-                <div><span class="label label-primary">Calidad de Señal WiFi:</span> <span>#wifi_percent# %</span></div>
+                <div><span class="label label-primary">RSSI WiFi:</span> <span id="wifi_dbm">#wifi_dbm# dBm</span></div>
+                <div><span class="label label-primary">Calidad de Señal WiFi:</span> <span id="wifi_percent">#wifi_percent# %</span></div>
                 <hr>
                 <h3>Broker MQTT</h3>
-                <div><span class="label label-primary">Estado MQTT:</span> <span>#mqtt_status#</span></div>
-                <div><span class="label label-primary">Servidor MQTT:</span> <span>#mqtt_server#</span></div>
+                <div><span class="label label-primary">Estado MQTT:</span> <span id="mqtt_status">#mqtt_status#</span></div>
+                <div><span class="label label-primary">Servidor MQTT:</span> <span id="mqtt_server">#mqtt_server#</span></div>
                 <div><span class="label label-primary">Usuario MQTT:</span> <span>#mqtt_user#</span></div>
                 <div><span class="label label-primary">Cliente ID MQTT:</span> <span>#mqtt_id#</span></div>
                 <hr>
                 <h3>Información General</h3>
                 <div><span class="label label-primary">Identificación:</span> <span>#id#</span></div>
                 <div><span class="label label-primary">Número de Serie:</span> <span>#serie#</span></div>
-                <div><span class="label label-primary">mDNS Url:</span> <span>http://#id#.local/</span></div>
+                <div><span class="label label-primary">mDNS Url:</span> <a href="http://#id#.local/" target="_blank">http://#id#.local/</a></div>
                 <div><span class="label label-primary">Dirección IP del Cliente:</span> <span>#clientIP#</span></div>
                 <div><span class="label label-primary">Navegador del Cliente:</span> <span>#userAgent#</span></div>
                 <div><span class="label label-primary">Versión del Firmware:</span> <span>#firmware#</span></div>
@@ -196,8 +197,8 @@
                 <div><span class="label label-primary">CPU FREQ:</span> <span>#cpu_freq# MHz</span></div>
                 <div><span class="label label-primary">RAM SIZE:</span> <span>#ram_size# KB</span></div>
                 <div><span class="label label-primary">FLASH SIZE:</span> <span>#flash_size# MB</span></div>
-                <div><span class="label label-primary">Fabricante:</span> <span>ELECTRONIC IOT</span></div>
-                <div><span class="label label-primary">Tiempo de Actividad del Sistema:</span> <span>#time_active#</span></div>
+                <div><span class="label label-primary">Fabricante:</span> <span>#manufacture#</span></div>
+                <div><span class="label label-primary">Tiempo de Actividad del Sistema:</span> <span id="time_active">#time_active#</span></div>
                 <div><span class="label label-primary">Cantidad de Reinicios:</span> <span>#bootCount#</span></div>
             </div>
         </div>
@@ -208,30 +209,29 @@
     <!-- RIGHT STRIP  SECTION -->
     <div id="right">
         <div class="well well-small">
-            <span>Señal WIFi</span>
-            <span class="pull-right"><small>#wifi_percent#%</small></span>
+            <span>Señal WIFi</span><span class="pull-right"><small id="wifi_label">#wifi_percent#%</small></span>
             <div class="progress mini">
-                <div class="progress-bar progress-bar-info" style="width: #wifi_percent#%"></div>
+                <div class="progress-bar progress-bar-info" id="wifi_Signal" style="width: #wifi_percent#%"></div>
             </div>
-            <span>FLASH Disponible</span><span class="pull-right"><small>#flash_available#%</small></span>
+            <span>SPIFFS Usada</span><span class="pull-right"><small id="spiffs_label">#spiffs_used#%</small></span>
             <div class="progress mini">
-                <div class="progress-bar progress-bar-success" style="width: #flash_available#%"></div>
+                <div class="progress-bar progress-bar-success" id="spiffs_Signal" style="width: #spiffs_used#%"></div>
             </div>
-            <span>RAM Disponible</span><span class="pull-right"><small>#ram_available#%</small></span>
+            <span>RAM Disponible</span><span class="pull-right"><small id="ram_label">#ram_available#%</small></span>
             <div class="progress mini">
-                <div class="progress-bar progress-bar-warning" style="width: #ram_available#%"></div>
+                <div class="progress-bar progress-bar-warning" id="ram_Signal" style="width: #ram_available#%"></div>
             </div>
         </div>
         <div class="well well-small">
-            <span>Relay 01</span><span class="pull-right success"><small class="label #label1#">#Statustext1#</small></span>
+            <span>Relay 01</span><span class="pull-right success"><small class="label #label1#" id="RELAY1_Status">#Statustext1#</small></span>
             <div class="make-switch" data-on="prymary" data-off="info">
-                <input type="checkbox" #relay1#>
+                <input type="checkbox" #relay1# id="RELAY1" onchange="relay(this);">
             </div>
             <br>
             <br>
-            <span>Relay 02</span><span class="pull-right success"><small class="label #label2#">#Statustext2#</small></span>
+            <span>Relay 02</span><span class="pull-right success"><small class="label #label2#" id="RELAY2_Status">#Statustext2#</small></span>
             <div class="make-switch" data-on="primary" data-off="info">
-                <input type="checkbox" #relay2#>
+                <input type="checkbox" #relay2# id="RELAY2" onchange="relay(this);">
             </div>
         </div>
     </div>
@@ -249,6 +249,7 @@
     <script src="www/bootstrap.min.js"></script>
     <script src="www/modernizr-2.6.2.min.js"></script>
     <script src="www/bootstrap-switch.min.js"></script>
+    <script src="www/sweetalert2.min.js"></script>
     <script src="www/scripts.js"></script>
     <!-- END GLOBAL SCRIPTS -->
 </body>
