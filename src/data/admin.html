@@ -118,7 +118,7 @@
             <div class="inner" style="min-height:1200px;">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h2> Usuario y Contraseña</h2>
+                        <h2 id="page">Usuario y Contraseña</h2>
                     </div>
                 </div>
             <hr>
@@ -131,36 +131,47 @@
                     </div>
                     <div class="panel-body">
                         <br>
-                        <form class="form-horizontal" name="esp-admin" action="esp-admin" method="POST" id="formulario">
-                            
+                        <form class="form-horizontal" name="esp-admin" action="esp-admin" method="POST" id="form">                            
                             <div class="form-group" id="form_www_username">
                                 <label for="www_username" class="control-label col-lg-3">Nombre de Usuario Anterior:</label>
                                 <div class="col-lg-5">
-                                    <input type="text" id="www_username" name="www_username" placeholder="Nombre de Usuario Anterior" class="form-control" />
+                                    <input type="text" id="www_username" name="www_username" data-expresion="www_username" placeholder="Nombre de Usuario Anterior" class="form-control" />
+                                    <label for="www_username" class="help-block formulario_input-error">El usuario tiene que contener un mínimo de 4 dígitos y 15 como máximo, solo puede contener letras minúsculas</label>
                                 </div>
                             </div>
                             <div class="form-group" id="form_www_password">
                                 <label for="www_password" class="control-label col-lg-3">Contraseña Anterior:</label>
                                 <div class="col-lg-5">
-                                    <input type="password" id="www_password" name="www_password" placeholder="Contraseña Anterior" class="form-control" />
+                                    <input type="password" id="www_password" name="www_password" data-expresion="www_password" placeholder="Contraseña Anterior" class="form-control" />
+                                    <label for="www_password" class="help-block formulario_input-error">La Contraseña tiene que contener un mínimo de 4 dígitos y 15 como máximo, solo puede contener letras minúsculas, mayúsculas y números</label>
                                 </div>
                             </div>
                             <div class="form-group" id="form_new_www_username">
                                 <label for="new_www_username" class="control-label col-lg-3">Nombre de Usuario Nuevo:</label>
                                 <div class="col-lg-5">
-                                    <input type="text" id="new_www_username" name="new_www_username" placeholder="Nombre de Usuario Nuevo" class="form-control" />
+                                    <input type="text" id="new_www_username" name="new_www_username" data-expresion="www_username" placeholder="Nombre de Usuario Nuevo" class="form-control" />
+                                    <label for="new_www_username" class="help-block formulario_input-error">El usuario tiene que contener un mínimo de 4 dígitos y 15 como máximo, solo puede contener letras minúsculas</label>
                                 </div>
                             </div>
                             <div class="form-group" id="form_new_www_password">
                                 <label for="new_www_password" class="control-label col-lg-3">Contraseña Nueva:</label>
                                 <div class="col-lg-5">
-                                    <input type="password" id="new_www_password" name="new_www_password" placeholder="Contraseña Nueva" class="form-control" />
+                                    <input type="password" id="new_www_password" name="new_www_password" data-expresion="www_password" placeholder="Contraseña Nueva" class="form-control" />
+                                    <label for="new_www_password" class="help-block formulario_input-error">La Contraseña tiene que contener un mínimo de 4 dígitos y 15 como máximo, solo puede contener letras minúsculas, mayúsculas y números</label>
                                 </div>
                             </div>
                             <div class="form-group" id="form_c_new_www_password">
                                 <label for="c_new_www_password" class="control-label col-lg-3">Confirmar la Contraseña Nueva:</label>
                                 <div class="col-lg-5">
                                     <input type="password" id="c_new_www_password" name="c_new_www_password" placeholder="Confirmar la Contraseña Nueva" class="form-control" />
+                                    <label for="c_new_www_password" class="help-block formulario_input-error">¡No coincide con la nueva contraseña! verifique por favor.</label>
+                                </div>
+                            </div>
+                            <div class="form-group formulario_mensaje" id="formulario_mensaje">
+                                <div class="col-lg-12">
+                                    <div class="alert alert-danger">
+                                        <p class="alert-link"><i class="icon-remove-sign"></i> <b>Error:</b> ¡Por favor rellena el formulario correctamente!. </p>
+                                    </div>
                                 </div>
                             </div>                 
                             <div class="form-group">
@@ -170,9 +181,7 @@
                                     <button class="btn btn-info" type="button" onclick="clearAdmin();"><i class="icon-eraser icon-white"></i> Limpiar Todo</button>
                                 </div>
                             </div>
-
-                        </form>                   
-                        
+                        </form>
                     </div>
                 </div>
             </div>

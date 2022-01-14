@@ -1,8 +1,8 @@
 /* capturar el url del navegador  http://server[/pathname] */
-let pathname = window.location.pathname;
+const pathname = window.location.pathname;
 /* WebSocket */
-//var connection = new WebSocket('ws://' + location.hostname + '/ws', ['arduino']);
-const connection = new WebSocket('ws://192.168.0.3/ws', ['arduino']);
+const connection = new WebSocket('ws://' + location.hostname + '/ws', ['arduino']);
+//const connection = new WebSocket('ws://192.168.0.3/ws', ['arduino']);
 /* Conexion Abierta */
 connection.onopen = function() {
     console.log('Conexión al WebSocket abierta');
@@ -45,7 +45,7 @@ function processData(data) {
             document.getElementById('wifi_dbm').innerHTML = json.wifi_dbm + " dBm"; // dbm Señal WIFI
             document.getElementById('dbm_label').innerHTML = json.wifi_dbm + " dBm"; // dbm Señal WIFI
             document.getElementById('wifi_percent').innerHTML = json.wifi_percent + " %"; // % de la señal WIFI
-            // preogressbar
+            // progressbar
             document.getElementById('wifi_Signal').style.width = json.wifi_percent + "%";
             document.getElementById('wifi_label').innerHTML = json.wifi_percent + "%";
             document.getElementById('spiffs_Signal').style.width = json.spiffs_used + "%";
@@ -242,7 +242,7 @@ function reiniciar() {
 let t = 10;
 /* Ocultar Visualizador de Progress Bar */
 function visu() {
-    var x = document.getElementById("visu");
+    let x = document.getElementById("visu");
     x.style.display = "none";
 }
 /* reinicio & restaurar */
@@ -283,3 +283,274 @@ function RestoreRestart(type) {
         }
     }
 }
+
+// Validacion de formulario
+const formulario = document.getElementById('form');
+const inputs = document.querySelectorAll('#form input');
+// Objeto de las expresiones regulares
+const expresiones = {
+        TextNumber: /^[a-zA-Z0-9]{4,30}$/, // Letras a-z A-Z minúsculas - mayúsculas, números caracteres de 4 mínimo a 30 dígitos máximo 
+        TextUnderscore: /^[a-zA-Z\_]{4,30}$/, // Letras minúsculas - mayusculas, guión bajo de 4 mínimo a 30 digitos máximo.
+        TextNumberPassw: /^[a-zA-Z0-9\_\-\*]{4,30}$/, // Letras minúsculas - mayúsculas, números, guiones y asterisco caracteres de 4 mínimo a 30 dígitos máximo. 
+        Dominio: /^([a-zA-Z]{2,6}|[a-zA-Z0-9-]{2,30}\.[a-zA-Z]{2,3})$/, // Ejemplo: ( tudominio.com ) sin los http:// o https://
+        ServerPort: /^(6553[0-5]|655[0-2][0-9]|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[0-5]?([0-9]){0,3}[0-9])$/, // Puertos desde 0 a 65535.
+        TextNumberWIFI: /^[a-zA-Z0-9 \_\-\.\'\#]{4,30}$/, // Letras minúsculas - mayúsculas, números, guiones, comilla simple, numeral, espacio y punto caracteres de 4 mínimo a 30 dígitos máximo.
+        //TextNumberWIFI: /^.{1,30}$/,
+        IPv4: /^((25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(25[0-5]|2[0-4]\d|[01]?\d\d?)$/, // IPv4 255.255.255.255
+        TextNumberAP: /^[a-zA-Z0-9 \_\-\.\'\#]{4,31}$/, // Letras minúsculas - mayúsculas, números, guiones, comilla simple, numeral y punto caracteres de 4 mínimo a 31 dígitos máximo.
+        TextNumberPasswAP: /^[a-zA-Z0-9\_\-\*]{4,63}$/, // Letras minúsculas - mayúsculas, números, guiones y asterisco caracteres de 4 mínimo a 63 dígitos máximo. 
+        www_username: /^[a-z]{4,15}$/, // Letras minúsculas caracteres de 4-15 digitos maximo.
+        www_password: /^[a-zA-Z0-9]{4,15}$/, // Letras minúsculas - mayusculas, numeros, caracteres de 4-15 digitos maximo.
+        id: /^[a-z0-9]{4,30}$/, // Letras minúsculas y numeros caracteres de 4-30 digitos maximo.
+    }
+    // Objeto de los campos a validar por formulario
+const campos = {
+        mqtt_id: true,
+        mqtt_user: true,
+        mqtt_passw: true,
+        mqtt_server: true,
+        mqtt_port: true,
+        mqtt_time: true,
+        // Wifi 
+        wifi_ssid: true,
+        wifi_passw: true,
+        wifi_ip_static: true,
+        wifi_subnet: true,
+        wifi_gateway: true,
+        wifi_primaryDNS: true,
+        wifi_secondaryDNS: true,
+        ap_nameap: true,
+        ap_passwordap: true,
+        ap_canalap: true,
+        ap_connetap: true,
+        // admin
+        www_username: true,
+        www_password: true,
+        new_www_username: true,
+        new_www_password: true,
+        // device
+        id: true
+    }
+    // Dejer de teclear y la perdida del foco del input
+inputs.forEach((input) => {
+    input.addEventListener('keyup', validarFormulario);
+    input.addEventListener('blur', validarFormulario);
+});
+// Función para validar el Formulario.
+function validarFormulario(e) {
+    //console.log(e.target.dataset.expresion);
+    switch (e.target.name) {
+        case "mqtt_id":
+            validarCampo(expresiones[e.target.dataset.expresion], e.target, e.target.name);
+            break;
+        case "mqtt_user":
+            validarCampo(expresiones[e.target.dataset.expresion], e.target, e.target.name);
+            break;
+        case "mqtt_passw":
+            validarCampo(expresiones[e.target.dataset.expresion], e.target, e.target.name);
+            break;
+        case "mqtt_server":
+            validarCampo(expresiones[e.target.dataset.expresion], e.target, e.target.name);
+            break;
+        case "mqtt_port":
+            validarCampo(expresiones[e.target.dataset.expresion], e.target, e.target.name);
+            break;
+        case "mqtt_time":
+            validarRango(e.target, e.target.name, 1, 60);
+            break;
+            // Sección WIFI
+        case "wifi_ssid":
+            validarCampo(expresiones[e.target.dataset.expresion], e.target, e.target.name);
+            break;
+        case "wifi_passw":
+            validarCampo(expresiones[e.target.dataset.expresion], e.target, e.target.name);
+            break;
+        case "wifi_ip_static":
+            validarCampo(expresiones[e.target.dataset.expresion], e.target, e.target.name);
+            break;
+        case "wifi_subnet":
+            validarCampo(expresiones[e.target.dataset.expresion], e.target, e.target.name);
+            break;
+        case "wifi_gateway":
+            validarCampo(expresiones[e.target.dataset.expresion], e.target, e.target.name);
+            break;
+        case "wifi_primaryDNS":
+            validarCampo(expresiones[e.target.dataset.expresion], e.target, e.target.name);
+            break;
+        case "wifi_secondaryDNS":
+            validarCampo(expresiones[e.target.dataset.expresion], e.target, e.target.name);
+            break;
+            //AP
+        case "ap_nameap":
+            validarCampo(expresiones[e.target.dataset.expresion], e.target, e.target.name);
+            break;
+        case "ap_passwordap":
+            validarCampo(expresiones[e.target.dataset.expresion], e.target, e.target.name);
+            break;
+        case "ap_canalap":
+            validarRango(e.target, e.target.name, 1, 13);
+            break;
+        case "ap_connetap":
+            validarRango(e.target, e.target.name, 0, 8);
+            break;
+            /* ADMIN FORM */
+        case "www_username":
+            validarCampo(expresiones[e.target.dataset.expresion], e.target, e.target.name);
+            break;
+        case "www_password":
+            validarCampo(expresiones[e.target.dataset.expresion], e.target, e.target.name);
+            break;
+        case "new_www_username":
+            validarCampo(expresiones[e.target.dataset.expresion], e.target, e.target.name);
+            break;
+        case "new_www_password":
+            validarCampo(expresiones[e.target.dataset.expresion], e.target, e.target.name);
+            validarPassword();
+            break;
+        case "c_new_www_password":
+            validarPassword();
+            break;
+        case "id":
+            validarCampo(expresiones[e.target.dataset.expresion], e.target, e.target.name);
+            break;
+    }
+}
+// Validar Campo
+const validarCampo = (expresion, input, campo) => {
+        //console.log(campo);
+        if (expresion.test(input.value) && input.value != '') {
+            document.querySelector(`#form_${campo}`).classList.remove('has-error');
+            document.querySelector(`#form_${campo}`).classList.add('has-success');
+            document.querySelector(`#form_${campo} .formulario_input-error`).classList.remove('formulario_input-error-activo');
+            campos[campo] = true;
+        } else {
+            document.querySelector(`#form_${campo}`).classList.remove('has-success');
+            document.querySelector(`#form_${campo}`).classList.add('has-error');
+            document.querySelector(`#form_${campo} .formulario_input-error`).classList.add('formulario_input-error-activo');
+            campos[campo] = false;
+        }
+    }
+    // Validar un Rango de numeros min <-> max
+const validarRango = (input, campo, min, max) => {
+        if (input.value >= min && input.value <= max) {
+            document.querySelector(`#form_${campo}`).classList.add('has-success');
+            document.querySelector(`#form_${campo}`).classList.remove('has-error');
+            document.querySelector(`#form_${campo} .formulario_input-error`).classList.remove('formulario_input-error-activo');
+            campos[campo] = true;
+        } else {
+            document.querySelector(`#form_${campo}`).classList.add('has-error');
+            document.querySelector(`#form_${campo}`).classList.remove('has-success');
+            document.querySelector(`#form_${campo} .formulario_input-error`).classList.add('formulario_input-error-activo');
+            campos[campo] = false;
+        }
+    }
+    // Validar new password y confirm new password iguales 
+const validarPassword = () => {
+        const inputNewPassword = document.getElementById('new_www_password');
+        const inputNewPasswordConfirm = document.getElementById('c_new_www_password');
+        if (inputNewPassword.value == inputNewPasswordConfirm.value) {
+            document.querySelector(`#form_c_new_www_password`).classList.add('has-success');
+            document.querySelector(`#form_c_new_www_password`).classList.remove('has-error');
+            document.querySelector(`#form_c_new_www_password .formulario_input-error`).classList.remove('formulario_input-error-activo');
+            campos['new_www_password'] = true;
+        } else {
+            document.querySelector(`#form_c_new_www_password`).classList.add('has-error');
+            document.querySelector(`#form_c_new_www_password`).classList.remove('has-success');
+            document.querySelector(`#form_c_new_www_password .formulario_input-error`).classList.add('formulario_input-error-activo');
+            campos['new_www_password'] = false;
+        }
+    }
+    // Interceptar el Evento Submit del Boton
+document.addEventListener("DOMContentLoaded", function(event) {
+    document.getElementById('form').addEventListener('submit', manejadorValidacion)
+});
+
+function manejadorValidacion(e) {
+    e.preventDefault();
+    let page = document.getElementById('page').innerHTML;
+    if (page == "Configuración del Broker MQTT") {
+        //console.log(page);
+        if (campos.mqtt_id && campos.mqtt_user && campos.mqtt_passw && campos.mqtt_server && campos.mqtt_port && campos.mqtt_time) {
+            document.getElementById('formulario_mensaje').classList.remove('formulario_mensaje-activo');
+            SweetAlert('¡Guardar!', page, 'question', this);
+            /*Swal.fire({
+                title: '¡Guardar!',
+                text: '( ' + page + ' )',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, guardar',
+                cancelButtonText: 'Cancelar',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.submit();
+                } else if (
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    history.back();
+                }
+            })*/
+        } else {
+            document.getElementById('formulario_mensaje').classList.add('formulario_mensaje-activo');
+            mensajeFormError();
+        }
+    } else if (page == "Configuración de la Red Inalámbrica") {
+        if (campos.wifi_ssid && campos.wifi_passw && campos.wifi_ip_static && campos.wifi_subnet && campos.wifi_gateway && campos.wifi_primaryDNS && campos.wifi_secondaryDNS && campos.ap_nameap && campos.ap_passwordap && campos.ap_canalap && campos.ap_connetap) {
+            document.getElementById('formulario_mensaje').classList.remove('formulario_mensaje-activo');
+            SweetAlert('¡Guardar!', page, 'question', this);
+        } else {
+            document.getElementById('formulario_mensaje').classList.add('formulario_mensaje-activo');
+            mensajeFormError();
+        }
+    } else if (page == "Usuario y Contraseña") {
+        if (campos.www_username && campos.www_password && campos.new_www_username && campos.new_www_password) {
+            document.getElementById('formulario_mensaje').classList.remove('formulario_mensaje-activo');
+            SweetAlert('¡Guardar!', page, 'question', this);
+        } else {
+            document.getElementById('formulario_mensaje').classList.add('formulario_mensaje-activo');
+            mensajeFormError();
+        }
+    } else if (page == "Información del dispositivo") {
+        if (campos.id) {
+            document.getElementById('formulario_mensaje').classList.remove('formulario_mensaje-activo');
+            SweetAlert('¡Guardar!', page, 'question', this);
+        } else {
+            document.getElementById('formulario_mensaje').classList.add('formulario_mensaje-activo');
+            mensajeFormError();
+        }
+    }
+}
+// Mansaje para confirmar el Guardado con el Evento Submit
+function SweetAlert(title, text, icon, e) {
+    Swal.fire({
+        title: title,
+        text: text,
+        icon: icon,
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, guardar',
+        cancelButtonText: 'Cancelar',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            e.submit();
+        } else if (
+            result.dismiss === Swal.DismissReason.cancel
+        ) {
+            history.back();
+        }
+    })
+}
+// Mansaje de Error al Validar Input
+let mensajeFormError = () => {
+    Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        title: '¡No se puede Guardar!',
+        showConfirmButton: false,
+        timer: 2000
+    });
+};

@@ -118,7 +118,7 @@
             <div class="inner" style="min-height:1200px;">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h2> Configuración del Broker MQTT</h2>
+                        <h2 id="page">Configuración del Broker MQTT</h2>
                     </div>
                 </div>
             <hr>
@@ -131,7 +131,7 @@
                     </div>
                     <div class="panel-body">
                         <br>                        
-                        <form class="form-horizontal" name="esp-mqtt" action="esp-mqtt" method="POST">
+                        <form class="form-horizontal" name="esp-mqtt" action="esp-mqtt" method="POST" id="form">
                             <input type="hidden" id="mqtten" name="mqtten" value="#mqtten#" class="form-control" />
                             <div class="form-group">
                                 <label for="mqtt_enable" class="control-label col-lg-3">Conexión MQTT:</label>
@@ -141,42 +141,55 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group" id="form_id">
+                            <div class="form-group" id="form_mqtt_id">
                                 <label for="mqtt_id" class="control-label col-lg-3">Client ID MQTT Broker :</label>
                                 <div class="col-lg-5">
-                                    <input type="text" id="mqtt_id" name="mqtt_id" value="#mqtt_id#" placeholder="ID MQTT Broker" class="form-control mqtt" />                                   
+                                    <input type="text" id="mqtt_id" name="mqtt_id" value="#mqtt_id#" data-expresion="TextNumber" placeholder="ID MQTT Broker" class="form-control mqtt" />
+                                    <label for="mqtt_id" class="help-block formulario_input-error">El Client ID MQTT tiene que contener un mínimo de 4 dígitos y 30 como máximo, solo puede contener números y letras.</label>
                                 </div>
                             </div>
-                            <div class="form-group" id="form_user">
+                            <div class="form-group" id="form_mqtt_user">
                                 <label for="mqtt_user" class="control-label col-lg-3">Usuario MQTT Broker :</label>
                                 <div class="col-lg-5">
-                                    <input type="text" id="mqtt_user" name="mqtt_user" value="#mqtt_user#" placeholder="Usuario MQTT" class="form-control mqtt" />                              
+                                    <input type="text" id="mqtt_user" name="mqtt_user" value="#mqtt_user#" data-expresion="TextUnderscore" placeholder="Usuario MQTT" class="form-control mqtt" /> 
+                                    <label for="mqtt_user" class="help-block formulario_input-error">El Usuario MQTT tiene que contener un mínimo de 4 dígitos y 30 como máximo, solo puede contener letras y guión bajo.</label>                              
                                 </div>
                             </div>
-                            <div class="form-group" id="form_passw">
+                            <div class="form-group" id="form_mqtt_passw">
                                 <label for="mqtt_passw" class="control-label col-lg-3">Contraseña MQTT Broker:</label>
                                 <div class="col-lg-5">
-                                    <input type="password" id="mqtt_passw" name="mqtt_passw" placeholder="*********" class="form-control mqtt" />
+                                    <input type="password" id="mqtt_passw" name="mqtt_passw" placeholder="*********" data-expresion="TextNumberPassw" class="form-control mqtt" />
+                                    <label for="mqtt_passw" class="help-block formulario_input-error">La Contraseña MQTT tiene que contener un mínimo de 4 dígitos y 30 como máximo, solo puede incluir números, letras y los siguientes caracteres especiales (-)(_)(*).</label>
                                 </div>
                             </div>
-                            <div class="form-group" id="form_server">
+                            <div class="form-group" id="form_mqtt_server">
                                 <label for="mqtt_server" class="control-label col-lg-3">Servidor MQTT :</label>
                                 <div class="col-lg-5">
-                                    <input type="text" id="mqtt_server" name="mqtt_server" value="#mqtt_server#" placeholder="Servidor MQTT" class="form-control mqtt" />
+                                    <input type="text" id="mqtt_server" name="mqtt_server" value="#mqtt_server#" data-expresion="Dominio" placeholder="Servidor MQTT" class="form-control mqtt" />
+                                    <label for="mqtt_server" class="help-block formulario_input-error">No es un servidor válido, Ejemplo: tudominio.com</label>
                                 </div>
                             </div>
-                            <div class="form-group" id="form_port">
+                            <div class="form-group" id="form_mqtt_port">
                                 <label for="mqtt_port" class="control-label col-lg-3">Puerto Servidor MQTT :</label>
                                 <div class="col-lg-5">
-                                    <input type="number" id="mqtt_port" name="mqtt_port" value="#mqtt_port#" placeholder="Puerto Servidor MQTT" class="form-control mqtt" />
+                                    <input type="number" id="mqtt_port" name="mqtt_port" value="#mqtt_port#" data-expresion="ServerPort" placeholder="Puerto Servidor MQTT" class="form-control mqtt" />
+                                    <label for="mqtt_port" class="help-block formulario_input-error">No es un puerto válido, Ejemplo: 0 - 65535 .</label>
                                 </div>
                             </div>
-                            <div class="form-group" id="form_time">
+                            <div class="form-group" id="form_mqtt_time">
                                 <label for="mqtt_time" class="control-label col-lg-3">Publish cada (min) :</label>
                                 <div class="col-lg-5">
                                     <input type="number" id="mqtt_time" name="mqtt_time" value="#mqtt_time#" placeholder="Tiempo en Minutos" class="form-control mqtt">
+                                    <label for="mqtt_time" class="help-block formulario_input-error">No es un tiempo válido, Ejemplo: 1 - 60 minutos.</label>
                                 </div>
-                            </div>                     
+                            </div> 
+                            <div class="form-group formulario_mensaje" id="formulario_mensaje">
+                                <div class="col-lg-12">
+                                    <div class="alert alert-danger">
+                                        <p class="alert-link"><i class="icon-remove-sign"></i> <b>Error:</b> ¡Por favor rellena el formulario correctamente!. </p>
+                                    </div>
+                                </div>
+                            </div>                   
                             <div class="form-group">
                                 <label for="#" class="control-label col-lg-3"></label>
                                 <div class="col-lg-5">

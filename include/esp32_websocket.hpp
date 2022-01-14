@@ -119,8 +119,8 @@ void ProcessRequest(AsyncWebSocketClient * client, String request){
 		ESP.restart(); 
 	}
 	
-
-	if(command != "restore"){
+    // TODO: Agregar cuando sea restart
+	if(command != "restore" && command != "restart"){
 		OnOffRelays(command);
 	}	
     
