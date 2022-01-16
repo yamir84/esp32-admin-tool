@@ -353,3 +353,24 @@ void OnOffRelays(String command){
     settingsSaveRelays();    
 
 }
+// -------------------------------------------------------------------
+// Retorna el Tipo de Encriptacion segun el codigo (0-1-2-3-4-5)
+// -------------------------------------------------------------------
+String EncryptionType(int encryptionType) {
+  switch (encryptionType) {
+    case (0):
+      return "Open";
+    case (1):
+      return "WEP";
+    case (2):
+      return "WPA_PSK";
+    case (3):
+      return "WPA2_PSK";
+    case (4):
+      return "WPA_WPA2_PSK";
+    case (5):
+      return "WPA2_ENTERPRISE";
+    default:
+      return "UNKOWN";
+    }
+}

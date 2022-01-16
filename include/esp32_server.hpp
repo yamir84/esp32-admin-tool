@@ -631,6 +631,57 @@ void InitServer(){
         }
     });
     // -------------------------------------------------------------------
+    // Escanear todas las redes WIFI al alcance de la señal
+    // url: /scan
+    // Metodo: GET
+    // Notas: La primera solicitud devolverá 0 resultados a menos que comience
+    // a escanear desde otro lugar (ciclo / configuración).
+    // No solicite más de 3-5 segundos. \ ALT + 92 
+    // -------------------------------------------------------------------
+    server.on("/scan", HTTP_GET, [](AsyncWebServerRequest *request){
+    AsyncResponseStream *response;
+        if(false == requestPreProcess(request, response)) {
+            return;
+        }
+        String json = "";
+        int n = WiFi.scanComplete();
+        if(n == -2){
+        json = "{";
+        json += "\"meta\": { \"serial\": \""+ device_id +"\", \"count\": 0},";
+        json += "\"data\": [";
+        json += "],";   
+        json += "\"code\": 0 ";
+        json += "}";
+        WiFi.scanNetworks(true, true); 
+        } else if(n){
+            json = "{";
+            json += "\"meta\": { \"serial\": \""+ device_id +"\", \"count\":"+String(n)+"},";
+            json += "\"data\": [";
+            for (int i = 0; i < n; ++i){
+                if(i) json += ",";
+                json += "{";
+                json += "\"n\":"+String(i+1);
+                json += ",\"rssi\":"+String(WiFi.RSSI(i));
+                json += ",\"ssid\":\""+WiFi.SSID(i)+"\"";
+                json += ",\"bssid\":\""+WiFi.BSSIDstr(i)+"\"";
+                json += ",\"channel\":"+String(WiFi.channel(i));
+                json += ",\"secure\":\""+ EncryptionType(WiFi.encryptionType(i))+"\"";
+                json += "}";
+            }
+            json += "],";   
+            json += "\"code\": 1 ";
+            json += "}";
+            WiFi.scanDelete();
+            if(WiFi.scanComplete() == -2){
+                WiFi.scanNetworks(true, true);
+            }
+        }
+        response->addHeader("Server","ESP32 Admin Tools");
+        request->send(200, "application/json", json);
+        json = String();
+
+    });
+    // -------------------------------------------------------------------
     // Error 404 página no encontrada
     // url: "desconocido"
     // -------------------------------------------------------------------

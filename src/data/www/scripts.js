@@ -460,10 +460,12 @@ const validarPassword = () => {
             campos['new_www_password'] = false;
         }
     }
-    // Interceptar el Evento Submit del Boton
-document.addEventListener("DOMContentLoaded", function(event) {
-    document.getElementById('form').addEventListener('submit', manejadorValidacion)
-});
+    // Interceptar el Evento Submit Solo en los Formularios (wifi-mqtt-device-admin)
+if (pathname == "/esp-wifi" || pathname == "/esp-mqtt" || pathname == "/esp-device" || pathname == "/esp-admin") {
+    document.addEventListener("DOMContentLoaded", function(event) {
+        document.getElementById('form').addEventListener('submit', manejadorValidacion)
+    });
+}
 
 function manejadorValidacion(e) {
     e.preventDefault();
@@ -554,3 +556,105 @@ let mensajeFormError = () => {
         timer: 2000
     });
 };
+// Escaneo de redes
+let escanear = () => {
+        const url = 'http://' + location.hostname + '/scan';
+        fetch(url)
+            .then(respuesta => respuesta.json())
+            .then(data => {
+                if (pathname == "/esp-wifi") {
+                    // capturamos el id de redes
+                    let redes = document.getElementById('redes');
+                    // capturamos el id de serial
+                    let serial = document.getElementById('serial');
+                    //limpiamos redes
+                    redes.innerHTML = "";
+                    //limpiamos serial
+                    serial.innerHTML = "";
+                    // mostrar json por consola
+                    console.log(data);
+                    // Mensaje de retorno Respuesta del Scan de redes WIFI
+                    if (data.code == 1) {
+                        // Count > 0
+                        //capturamos el id del Body para dibujar la tabla
+                        let mitabla = document.getElementById('mi_tabla');
+                        //limpiamos tabla
+                        mitabla.innerHTML = "";
+                        // Agregamos cantidad de redes
+                        redes.innerHTML = data.meta.count;
+                        // Agregamos el serial del dispositivo
+                        serial.innerHTML = "<i class='icon-barcode'></i> " + data.meta.serial;
+                        // Recorremos toda la lonjitud del data key DATA
+                        for (let valor of data.data) {
+                            if (parseInt(valor.rssi) >= -67) {
+                                mitabla.innerHTML += `  <tr class="success">
+                                                                <td align="center">${valor.n}</td>
+                                                                <td>${valor.ssid}</td>
+                                                                <td align="center">${valor.rssi}</td>
+                                                                <td>${valor.bssid}/<br>${valor.secure}</td>
+                                                                <td align="center">${valor.channel}</td>                  
+                                                                <td><button class="btn btn-primary" onclick="addWiFiInput();"><i class="icon-magnet"></i> Add</button></td>
+                                                            </tr>
+                                                        `;
+                            } else if (parseInt(valor.rssi) <= -67 && parseInt(valor.rssi) > -80) {
+                                mitabla.innerHTML += `<tr class="info">
+                                                                <td align="center">${valor.n}</td>
+                                                                <td>${valor.ssid}</td>
+                                                                <td align="center">${valor.rssi}</td>
+                                                                <td>${valor.bssid}/<br>${valor.secure}</td>
+                                                                <td align="center">${valor.channel}</td>
+                                                                <td><button class="btn btn-primary" onclick="addWiFiInput();"><i class="icon-magnet"></i> Add</button></td>
+                                                            </tr>
+                                                        `;
+                            } else if (parseInt(valor.rssi) <= -80 && parseInt(valor.rssi) > -90) {
+                                mitabla.innerHTML += `<tr class="warning">
+                                                                <td align="center">${valor.n}</td>
+                                                                <td>${valor.ssid}</td>
+                                                                <td align="center">${valor.rssi}</td>
+                                                                <td>${valor.bssid}/<br>${valor.secure}</td>
+                                                                <td align="center">${valor.channel}</td>
+                                                                <td><button class="btn btn-primary" onclick="addWiFiInput();"><i class="icon-magnet"></i> Add</button></td>
+                                                            </tr>
+                                                            `;
+                            } else {
+                                mitabla.innerHTML += `<tr class="danger">
+                                                                <td align="center">${valor.n}</td>
+                                                                <td>${valor.ssid}</td>
+                                                                <td align="center">${valor.rssi}</td>
+                                                                <td>${valor.bssid}/<br>${valor.secure}</td>
+                                                                <td align="center">${valor.channel}</td>
+                                                                <td><button class="btn btn-primary" onclick="addWiFiInput();"><i class="icon-magnet"></i> Add</button></td>
+                                                            </tr>
+                                                        `;
+                            }
+                        };
+                    } else {
+                        // Count = 0
+                        // Agregamos cantidad de redes
+                        redes.innerHTML = data.meta.count;
+                        // Agregamos el serial del dispositivo
+                        serial.innerHTML = "<i class='icon-barcode'></i> " + data.meta.serial;
+                    }
+                };
+            });
+    }
+    // Agregar el Nombre de la Red al Input segun Click en el Botón en la fila correspondiente
+let addWiFiInput = () => {
+    const table = document.getElementById("tableId");
+    const rows = table.getElementsByTagName("tr");
+    for (let i = 0; i < rows.length; i++) {
+        let currentRow = table.rows[i];
+        let createClickHandler =
+            function(row) {
+                return function() {
+                    let cell = row.getElementsByTagName("td")[1];
+                    let ssid = cell.innerHTML;
+                    //alert(ssid);
+                    let network = document.getElementById("wifi_ssid");
+                    network.value = ssid;
+                    $('#myModal').modal('hide');
+                };
+            };
+        currentRow.onclick = createClickHandler(currentRow);
+    }
+}

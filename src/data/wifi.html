@@ -282,3 +282,57 @@
 <!-- END BODY-->
 
 </html>
+
+<!-- VENTANA MODAL ESCANEO -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel"> Lista de Redes - Nodo: <span id="serial"><i class="icon-barcode"></i> </span></h4>
+        </div>
+        <div class="modal-body">
+            <code>Redes Encontradas: </code><span class="label label-success" id="redes">--</span>
+            <div class="table-responsive">
+                <table class="table" id="tableId">
+                    <thead>
+                        <tr>
+                            <th align="center">#</th>
+                            <th align="center">SSID</th>
+                            <th align="center">Señal (dBm)</th>
+                            <th align="center">BSSID/<br>Secure</th>
+                            <th align="center">Canal</th>
+                            <th align="center">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="mi_tabla">
+                        <!--                            
+                            <tr class="success">
+                                <td>cddxc</td>
+                                <td>xcxc</td>
+                                <td>xcxc</td>
+                                <td>xcxc</td>
+                                <td>xcxc</td>
+                                <td><button class="btn btn-primary" onclick="addRowHandlers();"><i class="icon-magnet"></i> Add</button></td>
+                            </tr>
+                            <tr class="success">
+                                <td>cddxc</td>
+                                <td>12345678</td>
+                                <td>xcxc</td>
+                                <td>xcxc</td>
+                                <td>xcxc</td>
+                                <td><button class="btn btn-primary" onclick="addRowHandlers();"><i class="icon-magnet"></i> Add</button></td>
+                            </tr>
+                        -->
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-primary" onclick="escanear();">Buscar</button>
+        </div>
+    </div>
+    </div>
+    </div>
